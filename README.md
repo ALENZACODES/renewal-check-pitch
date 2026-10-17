@@ -1,3 +1,5 @@
+![RenewalCheck: Pitch Deck banner](docs/banner.png)
+
 # RenewalCheck: Pitch Deck
 
 [![tests](https://github.com/ALENZACODES/renewal-check-pitch/actions/workflows/tests.yml/badge.svg)](https://github.com/ALENZACODES/renewal-check-pitch/actions/workflows/tests.yml)

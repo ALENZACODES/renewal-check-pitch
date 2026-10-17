@@ -14,8 +14,8 @@ test("every slide has a heading", () => {
   slides.forEach((s, i) => assert.match(s, /<h[12][^>]*>/, `slide ${i + 1}`));
 });
 
-test("every link is https", () => {
-  const hrefs = [...html.matchAll(/href="([^"]+)"/g)].map((m) => m[1]);
+test("every slide link is https", () => {
+  const hrefs = [...html.matchAll(/<a [^>]*href="([^"]+)"/g)].map((m) => m[1]);
   assert.ok(hrefs.length > 0);
   hrefs.forEach((h) => assert.match(h, /^https:\/\//, h));
 });

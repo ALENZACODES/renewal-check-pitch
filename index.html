@@ -5,15 +5,25 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="author" content="John Khan" />
     <title>RenewalCheck: a free mortgage-renewal checker for Canadian homeowners | John Khan</title>
+    <meta property="og:title" content="RenewalCheck: Pitch Deck" />
+    <meta
+      property="og:description"
+      content="Ten slides on a free Canadian renewal checker. Every figure links to its source."
+    />
+    <meta property="og:image" content="https://alenzacodes.github.io/renewal-check-pitch/docs/social-preview.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&family=Inter:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Pinyon+Script&family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="theme/waves.css" />
     <style>
       :root {
         --blue: #011f5b;
         --red: #990000;
-        --grey: #f2f3f5;
+        --grey: #f4f1ea;
         --ink: #1d1d1f;
         --mute: #5b6272;
       }
@@ -23,7 +33,7 @@
       html,
       body {
         margin: 0;
-        background: #dfe2e8;
+        background: #ece6d8;
         font-family: Inter, system-ui, sans-serif;
         color: var(--ink);
       }
@@ -83,7 +93,7 @@
       }
       h1,
       h2 {
-        font-family: "Source Serif 4", Georgia, serif;
+        font-family: "EB Garamond", Georgia, serif;
         color: var(--blue);
         margin: 0 0 18px;
         line-height: 1.12;
@@ -129,7 +139,7 @@
         flex: 1;
       }
       .big {
-        font-family: "Source Serif 4", serif;
+        font-family: "EB Garamond", serif;
         font-size: 58px;
         font-weight: 700;
         color: var(--red);
@@ -208,6 +218,39 @@
           margin: 0;
         }
       }
+
+      /* Navy and red wave theme (see theme/waves.css) */
+      .slide.dark {
+        background-image: url("theme/wave-lines.svg");
+        background-repeat: no-repeat;
+        background-position: right bottom;
+        background-size: 70% auto;
+      }
+      .slide:not(.dark):after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 26px;
+        background: url("theme/wave.svg") bottom / 100% 100% no-repeat;
+        transform: scaleY(-1);
+        opacity: 0.9;
+        pointer-events: none;
+      }
+      .slide:not(.dark) .num {
+        bottom: 30px;
+      }
+      h1 {
+        font-weight: 600;
+        letter-spacing: 0.005em;
+      }
+      .w-script {
+        font-size: 1.5em;
+      }
+      .dark .w-script {
+        color: #fff;
+      }
     </style>
   </head>
   <body>
@@ -219,7 +262,7 @@
           A free tool that tells a Canadian homeowner, in two minutes, what their mortgage payment will be at renewal
           and what to do about it.
         </p>
-        <p style="margin-top: auto">John Khan &middot; October 2026</p>
+        <p style="margin-top: auto"><span class="w-script">John Khan</span> &middot; October 2026</p>
         <p class="src">
           Audience: early-stage judges and housing-policy reviewers. Built only on public Bank of Canada and CMHC data.
         </p>
@@ -528,7 +571,7 @@
           </li>
           <li><b>Your hardest question</b> about the numbers. Every figure here has a source you can check.</li>
         </ul>
-        <p style="margin-top: auto; font-size: 20px">John Khan</p>
+        <p style="margin-top: auto; font-size: 20px"><span class="w-script">John Khan</span></p>
         <p class="src">
           Sources used: Bank of Canada (<a
             href="https://www.bankofcanada.ca/core-functions/monetary-policy/key-interest-rate/"
