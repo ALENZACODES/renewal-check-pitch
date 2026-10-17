@@ -1,109 +1,549 @@
-<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="author" content="John Khan">
-<title>RenewalCheck: a free mortgage-renewal checker for Canadian homeowners | John Khan</title>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-:root{--blue:#011F5B;--red:#990000;--grey:#F2F3F5;--ink:#1d1d1f;--mute:#5b6272}
-*{box-sizing:border-box}html,body{margin:0;background:#dfe2e8;font-family:Inter,system-ui,sans-serif;color:var(--ink)}
-.deck{max-width:1100px;margin:0 auto;padding:24px 16px 80px}
-.slide{position:relative;aspect-ratio:16/9;background:#fff;margin:0 0 28px;padding:56px 64px;border-radius:6px;box-shadow:0 6px 24px rgba(1,31,91,.12);overflow:hidden;display:flex;flex-direction:column}
-.slide.grey{background:var(--grey)}.slide.dark{background:var(--blue);color:#fff}
-.slide:before{content:"";position:absolute;left:0;top:0;bottom:0;width:8px;background:var(--red)}
-.num{position:absolute;right:28px;bottom:20px;font-size:13px;color:var(--mute)}.dark .num{color:#b9c3dc}
-.kicker{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:12px}.dark .kicker{color:#ffb3b3}
-h1,h2{font-family:"Source Serif 4",Georgia,serif;color:var(--blue);margin:0 0 18px;line-height:1.12}.dark h1,.dark h2{color:#fff}
-h1{font-size:50px}h2{font-size:36px}
-p,li{font-size:19px;line-height:1.5}ul{padding-left:20px;margin:0}li{margin-bottom:8px}
-.src{margin-top:auto;font-size:12.5px;color:var(--mute)}.src a{color:var(--blue)}.dark .src,.dark .src a{color:#c9d2e8}
-.cols{display:grid;grid-template-columns:1fr 1fr;gap:36px;flex:1}
-.big{font-family:"Source Serif 4",serif;font-size:58px;font-weight:700;color:var(--red);line-height:1}
-.stat p{margin:6px 0 0;font-size:16px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:10px}
-.card{background:#fff;border-top:4px solid var(--blue);padding:18px 20px;border-radius:4px}
-.grey .card{background:#fff}
-table{border-collapse:collapse;width:100%;font-size:17px}td,th{padding:9px 10px;border-bottom:1px solid #d7dbe3;text-align:left}th{color:var(--blue)}td.r,th.r{text-align:right}
-.hl{color:var(--red);font-weight:600}
-svg text{font-family:Inter,sans-serif}
-.notes{display:none}
-@media(max-width:800px){.slide{aspect-ratio:auto;padding:36px 28px}.cols,.stats{grid-template-columns:1fr}h1{font-size:34px}h2{font-size:26px}}
-@media print{body{background:#fff}.slide{box-shadow:none;page-break-after:always;margin:0}}
-</style></head><body><main class="deck">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="author" content="John Khan" />
+    <title>RenewalCheck: a free mortgage-renewal checker for Canadian homeowners | John Khan</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --blue: #011f5b;
+        --red: #990000;
+        --grey: #f2f3f5;
+        --ink: #1d1d1f;
+        --mute: #5b6272;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        background: #dfe2e8;
+        font-family: Inter, system-ui, sans-serif;
+        color: var(--ink);
+      }
+      .deck {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 24px 16px 80px;
+      }
+      .slide {
+        position: relative;
+        aspect-ratio: 16/9;
+        background: #fff;
+        margin: 0 0 28px;
+        padding: 56px 64px;
+        border-radius: 6px;
+        box-shadow: 0 6px 24px rgba(1, 31, 91, 0.12);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      .slide.grey {
+        background: var(--grey);
+      }
+      .slide.dark {
+        background: var(--blue);
+        color: #fff;
+      }
+      .slide:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 8px;
+        background: var(--red);
+      }
+      .num {
+        position: absolute;
+        right: 28px;
+        bottom: 20px;
+        font-size: 13px;
+        color: var(--mute);
+      }
+      .dark .num {
+        color: #b9c3dc;
+      }
+      .kicker {
+        font-size: 13px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--red);
+        font-weight: 600;
+        margin-bottom: 12px;
+      }
+      .dark .kicker {
+        color: #ffb3b3;
+      }
+      h1,
+      h2 {
+        font-family: "Source Serif 4", Georgia, serif;
+        color: var(--blue);
+        margin: 0 0 18px;
+        line-height: 1.12;
+      }
+      .dark h1,
+      .dark h2 {
+        color: #fff;
+      }
+      h1 {
+        font-size: 50px;
+      }
+      h2 {
+        font-size: 36px;
+      }
+      p,
+      li {
+        font-size: 19px;
+        line-height: 1.5;
+      }
+      ul {
+        padding-left: 20px;
+        margin: 0;
+      }
+      li {
+        margin-bottom: 8px;
+      }
+      .src {
+        margin-top: auto;
+        font-size: 12.5px;
+        color: var(--mute);
+      }
+      .src a {
+        color: var(--blue);
+      }
+      .dark .src,
+      .dark .src a {
+        color: #c9d2e8;
+      }
+      .cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 36px;
+        flex: 1;
+      }
+      .big {
+        font-family: "Source Serif 4", serif;
+        font-size: 58px;
+        font-weight: 700;
+        color: var(--red);
+        line-height: 1;
+      }
+      .stat p {
+        margin: 6px 0 0;
+        font-size: 16px;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        margin-top: 10px;
+      }
+      .card {
+        background: #fff;
+        border-top: 4px solid var(--blue);
+        padding: 18px 20px;
+        border-radius: 4px;
+      }
+      .grey .card {
+        background: #fff;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 17px;
+      }
+      td,
+      th {
+        padding: 9px 10px;
+        border-bottom: 1px solid #d7dbe3;
+        text-align: left;
+      }
+      th {
+        color: var(--blue);
+      }
+      td.r,
+      th.r {
+        text-align: right;
+      }
+      .hl {
+        color: var(--red);
+        font-weight: 600;
+      }
+      svg text {
+        font-family: Inter, sans-serif;
+      }
+      .notes {
+        display: none;
+      }
+      @media (max-width: 800px) {
+        .slide {
+          aspect-ratio: auto;
+          padding: 36px 28px;
+        }
+        .cols,
+        .stats {
+          grid-template-columns: 1fr;
+        }
+        h1 {
+          font-size: 34px;
+        }
+        h2 {
+          font-size: 26px;
+        }
+      }
+      @media print {
+        body {
+          background: #fff;
+        }
+        .slide {
+          box-shadow: none;
+          page-break-after: always;
+          margin: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="deck">
+      <section class="slide dark">
+        <div class="kicker">Pitch for the Toronto Fintech Pitch Night judges</div>
+        <h1>RenewalCheck</h1>
+        <p style="font-size: 26px; max-width: 820px">
+          A free tool that tells a Canadian homeowner, in two minutes, what their mortgage payment will be at renewal
+          and what to do about it.
+        </p>
+        <p style="margin-top: auto">John Khan &middot; October 2026</p>
+        <p class="src">
+          Audience: early-stage judges and housing-policy reviewers. Built only on public Bank of Canada and CMHC data.
+        </p>
+        <div class="num">1 / 10</div>
+      </section>
 
-<section class="slide dark"><div class="kicker">Pitch for the Toronto Fintech Pitch Night judges</div>
-<h1>RenewalCheck</h1>
-<p style="font-size:26px;max-width:820px">A free tool that tells a Canadian homeowner, in two minutes, what their mortgage payment will be at renewal and what to do about it.</p>
-<p style="margin-top:auto">John Khan &middot; October 2026</p>
-<p class="src">Audience: early-stage judges and housing-policy reviewers. Built only on public Bank of Canada and CMHC data.</p><div class="num">1 / 10</div></section>
+      <section class="slide">
+        <div class="kicker">The problem</div>
+        <h2>Priya signed in 2021. Her renewal letter just arrived.</h2>
+        <div class="cols">
+          <div>
+            <ul>
+              <li>She locked a five-year fixed rate when the Bank of Canada's policy rate was 0.25%.</li>
+              <li>Her lender's letter gives a new rate and a 15-day window to sign.</li>
+              <li>
+                She has no quick way to see the new payment, compare it, or know whether to switch, shorten the term or
+                prepay.
+              </li>
+              <li>Most people in her spot sign whatever the letter says.</li>
+            </ul>
+          </div>
+          <div class="card" style="align-self: center">
+            <p style="margin: 0; color: var(--mute); font-size: 15px">Illustration (hypothetical household)</p>
+            <p style="margin: 6px 0 0"><b>$500,000</b> borrowed in late 2021, 25-year amortization</p>
+            <p>Payment at 4.79%: <b>$2,849/month</b></p>
+            <p>Renews at 6.19% on $441,063: <b class="hl">$3,188/month</b></p>
+            <p style="font-size: 15px; color: var(--mute)">
+              +$340 a month. Rates are the Bank of Canada's posted 5-year conventional rate, which is higher than most
+              negotiated rates.
+            </p>
+          </div>
+        </div>
+        <p class="src">
+          Rates: Bank of Canada, 5-year conventional mortgage rate (series V80691335): 4.79% in Nov 2021, 6.19% on Oct
+          14, 2026.
+          <a
+            href="https://www.bankofcanada.ca/rates/banking-and-financial-statistics/posted-interest-rates-offered-by-chartered-banks/"
+            >bankofcanada.ca</a
+          >. Payment math: standard Canadian semi-annual compounding.
+        </p>
+        <div class="num">2 / 10</div>
+      </section>
 
-<section class="slide"><div class="kicker">The problem</div><h2>Priya signed in 2021. Her renewal letter just arrived.</h2>
-<div class="cols"><div><ul>
-<li>She locked a five-year fixed rate when the Bank of Canada's policy rate was 0.25%.</li>
-<li>Her lender's letter gives a new rate and a 15-day window to sign.</li>
-<li>She has no quick way to see the new payment, compare it, or know whether to switch, shorten the term or prepay.</li>
-<li>Most people in her spot sign whatever the letter says.</li></ul></div>
-<div class="card" style="align-self:center"><p style="margin:0;color:var(--mute);font-size:15px">Illustration (hypothetical household)</p>
-<p style="margin:6px 0 0"><b>$500,000</b> borrowed in late 2021, 25-year amortization</p>
-<p>Payment at 4.79%: <b>$2,849/month</b></p><p>Renews at 6.19% on $441,063: <b class="hl">$3,188/month</b></p>
-<p style="font-size:15px;color:var(--mute)">+$340 a month. Rates are the Bank of Canada's posted 5-year conventional rate, which is higher than most negotiated rates.</p></div></div>
-<p class="src">Rates: Bank of Canada, 5-year conventional mortgage rate (series V80691335): 4.79% in Nov 2021, 6.19% on Oct 14, 2026. <a href="https://www.bankofcanada.ca/rates/banking-and-financial-statistics/posted-interest-rates-offered-by-chartered-banks/">bankofcanada.ca</a>. Payment math: standard Canadian semi-annual compounding.</p><div class="num">2 / 10</div></section>
+      <section class="slide grey">
+        <div class="kicker">Why now</div>
+        <h2>The rate floor of 2020 to 2022 is gone, and those mortgages are coming due</h2>
+        <svg
+          viewBox="0 0 900 300"
+          width="100%"
+          role="img"
+          aria-label="Bank of Canada policy rate, April 2019 to October 2026"
+        >
+          <g stroke="#d7dbe3">
+            <line x1="60" y1="250" x2="880" y2="250" />
+            <line x1="60" y1="190" x2="880" y2="190" />
+            <line x1="60" y1="130" x2="880" y2="130" />
+            <line x1="60" y1="70" x2="880" y2="70" />
+            <line x1="60" y1="10" x2="880" y2="10" />
+          </g>
+          <g font-size="12" fill="#5b6272" text-anchor="end">
+            <text x="52" y="254">0%</text>
+            <text x="52" y="194">1.25%</text>
+            <text x="52" y="134">2.5%</text>
+            <text x="52" y="74">3.75%</text>
+            <text x="52" y="14">5%</text>
+          </g>
+          <rect x="186" y="10" width="200" height="240" fill="#990000" opacity=".07" />
+          <text x="286" y="28" font-size="12" fill="#990000" text-anchor="middle">
+            Five-year terms signed here renew 2025 to 2027
+          </text>
+          <polyline
+            fill="none"
+            stroke="#011F5B"
+            stroke-width="3.5"
+            points="60,166 123,166 186,238 249,238 312,238 375,238 438,202 501,70 564,34 627,10 690,10 753,70 816,118 880,142"
+          />
+          <g fill="#990000">
+            <circle cx="312" cy="238" r="5" />
+            <circle cx="627" cy="10" r="5" />
+            <circle cx="880" cy="142" r="5" />
+          </g>
+          <g font-size="13" fill="#011F5B" font-weight="600">
+            <text x="312" y="226" text-anchor="middle">0.25%</text>
+            <text x="627" y="30" text-anchor="middle">5.00%</text>
+            <text x="872" y="164" text-anchor="end">2.25% today</text>
+          </g>
+          <g font-size="12" fill="#5b6272" text-anchor="middle">
+            <text x="60" y="272">Apr 2019</text>
+            <text x="186" y="272">Apr 2020</text>
+            <text x="312" y="272">Apr 2021</text>
+            <text x="438" y="272">Apr 2022</text>
+            <text x="564" y="272">Apr 2023</text>
+            <text x="690" y="272">Apr 2024</text>
+            <text x="816" y="272">Apr 2025</text>
+            <text x="870" y="290">Oct 2026</text>
+          </g>
+        </svg>
+        <p style="margin: 4px 0 0">
+          Even after cuts, today's policy rate is nine times the 2021 level. Renewals in 2025 to 2027 reset from the
+          lowest rates on record.
+        </p>
+        <p class="src">
+          Source: Bank of Canada, target for the overnight rate (series V39079), month-end values, Valet API, retrieved
+          Oct 15, 2026.
+          <a href="https://www.bankofcanada.ca/core-functions/monetary-policy/key-interest-rate/"
+            >bankofcanada.ca/core-functions/monetary-policy/key-interest-rate</a
+          >
+        </p>
+        <div class="num">3 / 10</div>
+      </section>
 
-<section class="slide grey"><div class="kicker">Why now</div><h2>The rate floor of 2020 to 2022 is gone, and those mortgages are coming due</h2>
-<svg viewBox="0 0 900 300" width="100%" role="img" aria-label="Bank of Canada policy rate, April 2019 to October 2026">
-<g stroke="#d7dbe3"><line x1="60" y1="250" x2="880" y2="250"/><line x1="60" y1="190" x2="880" y2="190"/><line x1="60" y1="130" x2="880" y2="130"/><line x1="60" y1="70" x2="880" y2="70"/><line x1="60" y1="10" x2="880" y2="10"/></g>
-<g font-size="12" fill="#5b6272" text-anchor="end"><text x="52" y="254">0%</text><text x="52" y="194">1.25%</text><text x="52" y="134">2.5%</text><text x="52" y="74">3.75%</text><text x="52" y="14">5%</text></g>
-<rect x="186" y="10" width="200" height="240" fill="#990000" opacity=".07"/><text x="286" y="28" font-size="12" fill="#990000" text-anchor="middle">Five-year terms signed here renew 2025 to 2027</text>
-<polyline fill="none" stroke="#011F5B" stroke-width="3.5" points="60,166 123,166 186,238 249,238 312,238 375,238 438,202 501,70 564,34 627,10 690,10 753,70 816,118 880,142"/>
-<g fill="#990000"><circle cx="312" cy="238" r="5"/><circle cx="627" cy="10" r="5"/><circle cx="880" cy="142" r="5"/></g>
-<g font-size="13" fill="#011F5B" font-weight="600"><text x="312" y="226" text-anchor="middle">0.25%</text><text x="627" y="30" text-anchor="middle">5.00%</text><text x="872" y="164" text-anchor="end">2.25% today</text></g>
-<g font-size="12" fill="#5b6272" text-anchor="middle"><text x="60" y="272">Apr 2019</text><text x="186" y="272">Apr 2020</text><text x="312" y="272">Apr 2021</text><text x="438" y="272">Apr 2022</text><text x="564" y="272">Apr 2023</text><text x="690" y="272">Apr 2024</text><text x="816" y="272">Apr 2025</text><text x="870" y="290">Oct 2026</text></g></svg>
-<p style="margin:4px 0 0">Even after cuts, today's policy rate is nine times the 2021 level. Renewals in 2025 to 2027 reset from the lowest rates on record.</p>
-<p class="src">Source: Bank of Canada, target for the overnight rate (series V39079), month-end values, Valet API, retrieved Oct 15, 2026. <a href="https://www.bankofcanada.ca/core-functions/monetary-policy/key-interest-rate/">bankofcanada.ca/core-functions/monetary-policy/key-interest-rate</a></p><div class="num">3 / 10</div></section>
+      <section class="slide">
+        <div class="kicker">The solution</div>
+        <h2>Enter four numbers. See your renewal, plainly.</h2>
+        <div class="cols">
+          <div>
+            <ol style="padding-left: 22px">
+              <li>Balance, rate, payment and renewal date from your statement.</li>
+              <li>RenewalCheck pulls current posted rates and the policy rate straight from the Bank of Canada.</li>
+              <li>
+                It shows the new payment, the yearly difference and three options: keep your payment and extend, shorten
+                the term, or prepay.
+              </li>
+              <li>It prints a one-page checklist to take to your lender or broker.</li>
+            </ol>
+          </div>
+          <div class="card" style="align-self: center; border-top-color: var(--red)">
+            <p style="margin: 0"><b>What it never does</b></p>
+            <ul style="margin-top: 8px">
+              <li>No sign-up, no email, no data stored</li>
+              <li>No product sales or referral fees</li>
+              <li>No figure without a linked public source</li>
+            </ul>
+          </div>
+        </div>
+        <p class="src">
+          All rate inputs come from the Bank of Canada Valet API (public, free):
+          <a href="https://www.bankofcanada.ca/valet/docs">bankofcanada.ca/valet/docs</a>
+        </p>
+        <div class="num">4 / 10</div>
+      </section>
 
-<section class="slide"><div class="kicker">The solution</div><h2>Enter four numbers. See your renewal, plainly.</h2>
-<div class="cols"><div><ol style="padding-left:22px">
-<li>Balance, rate, payment and renewal date from your statement.</li>
-<li>RenewalCheck pulls current posted rates and the policy rate straight from the Bank of Canada.</li>
-<li>It shows the new payment, the yearly difference and three options: keep your payment and extend, shorten the term, or prepay.</li>
-<li>It prints a one-page checklist to take to your lender or broker.</li></ol></div>
-<div class="card" style="align-self:center;border-top-color:var(--red)">
-<p style="margin:0"><b>What it never does</b></p><ul style="margin-top:8px"><li>No sign-up, no email, no data stored</li><li>No product sales or referral fees</li><li>No figure without a linked public source</li></ul></div></div>
-<p class="src">All rate inputs come from the Bank of Canada Valet API (public, free): <a href="https://www.bankofcanada.ca/valet/docs">bankofcanada.ca/valet/docs</a></p><div class="num">4 / 10</div></section>
+      <section class="slide grey">
+        <div class="kicker">Market</div>
+        <h2>A very large pool of households, using only public numbers</h2>
+        <div class="stats">
+          <div class="card stat">
+            <div class="big">$2.4T</div>
+            <p>Residential mortgage debt outstanding in Canada, December 2025</p>
+          </div>
+          <div class="card stat">
+            <div class="big">6.19%</div>
+            <p>Posted 5-year conventional mortgage rate, Oct 14, 2026, up from 4.79% in Nov 2021</p>
+          </div>
+          <div class="card stat">
+            <div class="big">2.25%</div>
+            <p>Policy rate today, versus 0.25% when 2021 terms were signed</p>
+          </div>
+        </div>
+        <p style="margin-top: 22px">
+          What I don't know yet: how many homeowners would use a free checker. The first pilot (slide 8) is designed to
+          find out, not to assume it.
+        </p>
+        <p class="src">
+          CMHC, Residential Mortgage Industry Report, Spring 2026:
+          <a
+            href="https://www.cmhc-schl.gc.ca/professionals/housing-markets-data-and-research/housing-research/research-reports/housing-finance/residential-mortgage-industry-report"
+            >cmhc-schl.gc.ca</a
+          >. Rates: Bank of Canada, series V39079 and V80691335.
+        </p>
+        <div class="num">5 / 10</div>
+      </section>
 
-<section class="slide grey"><div class="kicker">Market</div><h2>A very large pool of households, using only public numbers</h2>
-<div class="stats">
-<div class="card stat"><div class="big">$2.4T</div><p>Residential mortgage debt outstanding in Canada, December 2025</p></div>
-<div class="card stat"><div class="big">6.19%</div><p>Posted 5-year conventional mortgage rate, Oct 14, 2026, up from 4.79% in Nov 2021</p></div>
-<div class="card stat"><div class="big">2.25%</div><p>Policy rate today, versus 0.25% when 2021 terms were signed</p></div></div>
-<p style="margin-top:22px">What I don't know yet: how many homeowners would use a free checker. The first pilot (slide 8) is designed to find out, not to assume it.</p>
-<p class="src">CMHC, Residential Mortgage Industry Report, Spring 2026: <a href="https://www.cmhc-schl.gc.ca/professionals/housing-markets-data-and-research/housing-research/research-reports/housing-finance/residential-mortgage-industry-report">cmhc-schl.gc.ca</a>. Rates: Bank of Canada, series V39079 and V80691335.</p><div class="num">5 / 10</div></section>
+      <section class="slide">
+        <div class="kicker">How it compares</div>
+        <h2>The options people use today all have a catch</h2>
+        <table>
+          <tr>
+            <th>Option</th>
+            <th>Cost to homeowner</th>
+            <th>Neutral?</th>
+            <th>Sources shown?</th>
+          </tr>
+          <tr>
+            <td>Lender renewal letter</td>
+            <td>Free</td>
+            <td>No, it's the lender's offer</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td>Bank calculators</td>
+            <td>Free</td>
+            <td>Tied to that bank's products</td>
+            <td>Rarely</td>
+          </tr>
+          <tr>
+            <td>Lead-generation rate sites</td>
+            <td>Free, paid with your contact details</td>
+            <td>Paid by referrals</td>
+            <td>Sometimes</td>
+          </tr>
+          <tr>
+            <td><b>RenewalCheck</b></td>
+            <td><b>Free, no sign-up</b></td>
+            <td class="hl">Yes, no referral income</td>
+            <td class="hl">Every figure linked</td>
+          </tr>
+        </table>
+        <p class="src">Comparison based on publicly visible features of each type of tool, Oct 2026.</p>
+        <div class="num">6 / 10</div>
+      </section>
 
-<section class="slide"><div class="kicker">How it compares</div><h2>The options people use today all have a catch</h2>
-<table><tr><th>Option</th><th>Cost to homeowner</th><th>Neutral?</th><th>Sources shown?</th></tr>
-<tr><td>Lender renewal letter</td><td>Free</td><td>No, it's the lender's offer</td><td>No</td></tr>
-<tr><td>Bank calculators</td><td>Free</td><td>Tied to that bank's products</td><td>Rarely</td></tr>
-<tr><td>Lead-generation rate sites</td><td>Free, paid with your contact details</td><td>Paid by referrals</td><td>Sometimes</td></tr>
-<tr><td><b>RenewalCheck</b></td><td><b>Free, no sign-up</b></td><td class="hl">Yes, no referral income</td><td class="hl">Every figure linked</td></tr></table>
-<p class="src">Comparison based on publicly visible features of each type of tool, Oct 2026.</p><div class="num">6 / 10</div></section>
+      <section class="slide grey">
+        <div class="kicker">Sustainability</div>
+        <h2>Free for homeowners, funded like a public good</h2>
+        <div class="cols">
+          <div>
+            <ul>
+              <li><b>Grants</b> from financial-literacy and housing programs</li>
+              <li><b>Sponsorships</b> from credit unions and non-profits, shown clearly, with no say over results</li>
+              <li><b>Licensing</b> a white-label version to community legal clinics and credit counsellors</li>
+            </ul>
+          </div>
+          <div>
+            <p>
+              <b>Costs are small by design.</b> Static site, no database, public data feeds. Hosting runs on free tiers
+              today.
+            </p>
+            <p>The constraint is trust, not servers, so the rule stays: no lead selling, ever.</p>
+          </div>
+        </div>
+        <p class="src">
+          Hosting: GitHub Pages (free). Data: Bank of Canada Valet API and CMHC publications (free, public).
+        </p>
+        <div class="num">7 / 10</div>
+      </section>
 
-<section class="slide grey"><div class="kicker">Sustainability</div><h2>Free for homeowners, funded like a public good</h2>
-<div class="cols"><div><ul><li><b>Grants</b> from financial-literacy and housing programs</li><li><b>Sponsorships</b> from credit unions and non-profits, shown clearly, with no say over results</li><li><b>Licensing</b> a white-label version to community legal clinics and credit counsellors</li></ul></div>
-<div><p><b>Costs are small by design.</b> Static site, no database, public data feeds. Hosting runs on free tiers today.</p><p>The constraint is trust, not servers, so the rule stays: no lead selling, ever.</p></div></div>
-<p class="src">Hosting: GitHub Pages (free). Data: Bank of Canada Valet API and CMHC publications (free, public).</p><div class="num">7 / 10</div></section>
+      <section class="slide">
+        <div class="kicker">Plan</div>
+        <h2>Next 90 days: prove people use it and understand it</h2>
+        <table>
+          <tr>
+            <th>When</th>
+            <th>Milestone</th>
+            <th>How I'll measure it</th>
+          </tr>
+          <tr>
+            <td>Weeks 1 to 4</td>
+            <td>Public beta with live Bank of Canada rates</td>
+            <td>Calculator matches hand calculations on 20 test cases</td>
+          </tr>
+          <tr>
+            <td>Weeks 5 to 8</td>
+            <td>Test with 30 homeowners renewing in the next year</td>
+            <td>Can they explain their new payment back to me?</td>
+          </tr>
+          <tr>
+            <td>Weeks 9 to 12</td>
+            <td>French version and plain-language checklist</td>
+            <td>Completion rate and repeat visits, no personal data kept</td>
+          </tr>
+        </table>
+        <p class="src">Targets are goals, not results. No usage figures are claimed in this deck.</p>
+        <div class="num">8 / 10</div>
+      </section>
 
-<section class="slide"><div class="kicker">Plan</div><h2>Next 90 days: prove people use it and understand it</h2>
-<table><tr><th>When</th><th>Milestone</th><th>How I'll measure it</th></tr>
-<tr><td>Weeks 1 to 4</td><td>Public beta with live Bank of Canada rates</td><td>Calculator matches hand calculations on 20 test cases</td></tr>
-<tr><td>Weeks 5 to 8</td><td>Test with 30 homeowners renewing in the next year</td><td>Can they explain their new payment back to me?</td></tr>
-<tr><td>Weeks 9 to 12</td><td>French version and plain-language checklist</td><td>Completion rate and repeat visits, no personal data kept</td></tr></table>
-<p class="src">Targets are goals, not results. No usage figures are claimed in this deck.</p><div class="num">8 / 10</div></section>
+      <section class="slide grey">
+        <div class="kicker">Builder</div>
+        <h2>Why I'm building this</h2>
+        <div class="cols">
+          <div>
+            <p>
+              I'm John Khan, based in Richmond Hill, Ontario. I build tools that turn public financial data into
+              decisions regular people can act on.
+            </p>
+            <p>Related work, all public:</p>
+            <ul>
+              <li>
+                <a href="https://alenzacodes.github.io/canada-rate-cycle-dashboard/">Canada rate-cycle dashboard</a>,
+                Bank of Canada data, 2015 to 2026
+              </li>
+            </ul>
+          </div>
+          <div class="card" style="align-self: center">
+            <p style="margin: 0"><b>Principles</b></p>
+            <ul style="margin-top: 8px">
+              <li>If I don't have a number, I say so</li>
+              <li>Every chart links to its source</li>
+              <li>Nothing to sell the user</li>
+            </ul>
+          </div>
+        </div>
+        <div class="num">9 / 10</div>
+      </section>
 
-<section class="slide grey"><div class="kicker">Builder</div><h2>Why I'm building this</h2>
-<div class="cols"><div><p>I'm John Khan, based in Richmond Hill, Ontario. I build tools that turn public financial data into decisions regular people can act on.</p><p>Related work, all public:</p><ul><li><a href="https://alenzacodes.github.io/canada-rate-cycle-dashboard/">Canada rate-cycle dashboard</a>, Bank of Canada data, 2015 to 2026</li></ul></div>
-<div class="card" style="align-self:center"><p style="margin:0"><b>Principles</b></p><ul style="margin-top:8px"><li>If I don't have a number, I say so</li><li>Every chart links to its source</li><li>Nothing to sell the user</li></ul></div></div><div class="num">9 / 10</div></section>
-
-<section class="slide dark"><div class="kicker">The ask</div><h2>Help me put this in front of 1,000 renewing homeowners</h2>
-<ul style="font-size:21px"><li><b>The prize money</b> covers a French translation, accessibility review and three months of user testing.</li><li><b>One introduction</b> to a credit union or community financial-literacy partner willing to share it with members.</li><li><b>Your hardest question</b> about the numbers. Every figure here has a source you can check.</li></ul>
-<p style="margin-top:auto;font-size:20px">John Khan</p>
-<p class="src">Sources used: Bank of Canada (<a href="https://www.bankofcanada.ca/core-functions/monetary-policy/key-interest-rate/">policy rate</a>, <a href="https://www.bankofcanada.ca/rates/banking-and-financial-statistics/posted-interest-rates-offered-by-chartered-banks/">posted mortgage rates</a>), CMHC (<a href="https://www.cmhc-schl.gc.ca/professionals/housing-markets-data-and-research/housing-research/research-reports/housing-finance/residential-mortgage-industry-report">Residential Mortgage Industry Report</a>).</p><div class="num">10 / 10</div></section>
-</main></body></html>
+      <section class="slide dark">
+        <div class="kicker">The ask</div>
+        <h2>Help me put this in front of 1,000 renewing homeowners</h2>
+        <ul style="font-size: 21px">
+          <li>
+            <b>The prize money</b> covers a French translation, accessibility review and three months of user testing.
+          </li>
+          <li>
+            <b>One introduction</b> to a credit union or community financial-literacy partner willing to share it with
+            members.
+          </li>
+          <li><b>Your hardest question</b> about the numbers. Every figure here has a source you can check.</li>
+        </ul>
+        <p style="margin-top: auto; font-size: 20px">John Khan</p>
+        <p class="src">
+          Sources used: Bank of Canada (<a
+            href="https://www.bankofcanada.ca/core-functions/monetary-policy/key-interest-rate/"
+            >policy rate</a
+          >,
+          <a
+            href="https://www.bankofcanada.ca/rates/banking-and-financial-statistics/posted-interest-rates-offered-by-chartered-banks/"
+            >posted mortgage rates</a
+          >), CMHC (<a
+            href="https://www.cmhc-schl.gc.ca/professionals/housing-markets-data-and-research/housing-research/research-reports/housing-finance/residential-mortgage-industry-report"
+            >Residential Mortgage Industry Report</a
+          >).
+        </p>
+        <div class="num">10 / 10</div>
+      </section>
+    </main>
+  </body>
+</html>
