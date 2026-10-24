@@ -22,7 +22,7 @@ test("every slide link is https", () => {
 
 test("the sources listed in the README are linked in the deck", () => {
   const readme = readFileSync(new URL("../README.md", import.meta.url), "utf8");
-  const sources = readme.split("## Sources")[1].split("##")[0].match(/https:\/\/\S+/g);
+  const sources = readme.split(/^## (?:Data and sources|Sources)\s*$/m)[1].split("##")[0].match(/https:\/\/\S+/g);
   assert.ok(sources.length >= 4);
   sources.forEach((u) => assert.ok(html.includes(u), u));
 });
